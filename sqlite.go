@@ -3,20 +3,22 @@ package sqlite
 import (
 	"context"
 	"database/sql"
+	sqlitelib "modernc.org/sqlite/lib"
 	"strconv"
 
 	"gorm.io/gorm/callbacks"
 
-	_ "github.com/mattn/go-sqlite3"
+	//_ "github.com/mattn/go-sqlite3"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/migrator"
 	"gorm.io/gorm/schema"
+	"modernc.org/sqlite"
 )
 
 // DriverName is the default driver name for SQLite.
-const DriverName = "sqlite3"
+const DriverName = "sqlite"
 
 type Dialector struct {
 	DriverName string
@@ -265,4 +267,19 @@ func compareVersion(version1, version2 string) int {
 		}
 	}
 	return 0
+}
+
+func (dialector Dialector) Translate(err error) error {
+	switch terr := err.(type) {
+	case *sqlite.Error:
+		switch terr.Code() {
+		case sqlitelib.SQLITE_CONSTRAINT_UNIQUE:
+			return gorm.ErrDuplicatedKey
+		case sqlitelib.SQLITE_CONSTRAINT_PRIMARYKEY:
+			return gorm.ErrDuplicatedKey
+		case sqlitelib.SQLITE_CONSTRAINT_FOREIGNKEY:
+			return gorm.ErrForeignKeyViolated
+		}
+	}
+	return err
 }

@@ -1,20 +1,6 @@
-# GORM Sqlite Driver
+# LipsonX GORM Pure-Go Sqlite Driver Version
 
-![CI](https://github.com/go-gorm/sqlite/workflows/CI/badge.svg)
-
-## USAGE
-
-```go
-import (
-  "gorm.io/driver/sqlite"
-  "gorm.io/gorm"
-)
-
-// github.com/mattn/go-sqlite3
-db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
-```
-
-Checkout [https://gorm.io](https://gorm.io) for details.
+This project is draws inspiration from glebarez/sqlite and only base on modernc.org/sqlite. I personally maintain this project for personal compilation of the gogs project. Not recommended for use.
 
 ### Pure go Sqlite Driver
 
@@ -22,7 +8,7 @@ checkout [https://github.com/glebarez/sqlite](https://github.com/glebarez/sqlite
 
 ```go
 import (
-  "github.com/glebarez/sqlite"
+  "github.com/LipsonX/sqlite"
   "gorm.io/gorm"
 )
 
